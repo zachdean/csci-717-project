@@ -16,7 +16,7 @@ public class InvestmentService {
     }
 
     public List<Investment> getInvestments(String userId) {
-        return dataStore.getItems(userId);
+        return dataStore.getItems(userId, Investment.class);
 
     }
 }

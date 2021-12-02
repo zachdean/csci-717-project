@@ -17,6 +17,6 @@ public class SnowballService {
 
     public List<Debt> getDebts(String userId) {
 
-        return dataStore.getItems(userId);
+        return dataStore.getItems(userId, Debt.class);
     }
 }

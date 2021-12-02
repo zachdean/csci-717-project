@@ -16,6 +16,6 @@ public class ExpenseService {
     }
 
     public List<Expense> getExpenses(String userId) {
-        return dataStore.getItems(userId);
+        return dataStore.getItems(userId, Expense.class);
     }
 }

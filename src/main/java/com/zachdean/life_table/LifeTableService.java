@@ -4,9 +4,6 @@ import com.zachdean.debt_snowball.Debt;
 import com.zachdean.investment.Investment;
 import com.zachdean.major_expense.Expense;
 
-import software.amazon.awssdk.enhanced.dynamodb.internal.converter.string.BigDecimalStringConverter;
-
-import java.io.Console;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -24,7 +21,6 @@ public class LifeTableService {
         rawDebts.forEach((debt) -> {try {
             debts.add(debt.clone());
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }});
 
@@ -32,7 +28,6 @@ public class LifeTableService {
         rawInvestments.forEach((investment) -> {try {
             investments.add(investment.clone());
         } catch (CloneNotSupportedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }});
 

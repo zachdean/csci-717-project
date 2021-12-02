@@ -18,14 +18,18 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 
-  <dependencies>
-
+  <dependencies>    
     <dependency>
       <groupId>com.microsoft.azure.functions</groupId>
-      <artifactId>azure-functions-java-library-cosmosdbcassandra</artifactId>
-      <version>1.0.0</version>
+      <artifactId>azure-functions-java-library</artifactId>
+      <version>1.4.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-cosmos</artifactId>
+      <version>LATEST</version>
+    </dependency>
 
     <dependency>
       <groupId>com.amazonaws</groupId>
