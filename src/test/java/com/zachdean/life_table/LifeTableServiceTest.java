@@ -3,9 +3,6 @@ package com.zachdean.life_table;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -16,8 +13,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zachdean.debt_snowball.Debt;
-import com.zachdean.functions.AzureDataFetcher;
-import com.zachdean.investment.Investment;
 import com.zachdean.major_expense.Expense;
 
 import org.junit.jupiter.api.Test;
