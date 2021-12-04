@@ -3,17 +3,18 @@ package com.zachdean.debt_snowball;
 import java.math.BigDecimal;
 
 public class Debt implements Cloneable {
+    private String userId;
     private boolean isPaidOff;
     private BigDecimal interestRate;
     private BigDecimal balance;
     private BigDecimal payment;
     private String name;    
 
-    public boolean isPaidOff() {
+    public boolean getIsPaidOff() {
         return isPaidOff;
     }
 
-    public void setPaidOff(boolean paidOff) {
+    public void setIsPaidOff(boolean paidOff) {
         isPaidOff = paidOff;
     }
 
@@ -48,6 +49,11 @@ public class Debt implements Cloneable {
     public void setPayment(BigDecimal payment) {
         this.payment = payment;
     }
+
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
+    public String getId() { return userId + "-" + name;}
 
     public Debt clone() throws CloneNotSupportedException
     {

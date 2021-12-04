@@ -6,6 +6,7 @@ public class Investment implements Cloneable {
     private BigDecimal interestRate;
     private BigDecimal amount;
     private String name;
+    private String userId;
 
     public BigDecimal getInterestRate() {
         return interestRate;
@@ -30,6 +31,11 @@ public class Investment implements Cloneable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getId() { return userId + "-" + name;}
+    
+    public String getUserId() { return userId; }
+    public void serUserId(String userId) { this.userId = userId; }
 
     public Investment clone() throws CloneNotSupportedException
     {

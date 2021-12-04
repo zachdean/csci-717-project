@@ -16,7 +16,7 @@ public class LifeTableService {
     // devide interest rate by twelve in simplified monthly interest rate
     private static final BigDecimal INTEREST_DENOMINATOR = BigDecimal.valueOf(12);
 
-    public Simulation GetSimulation(Date target, List<Debt> rawDebts, List<Expense> rawExpenses, List<Investment> rawInvestments) {
+    public Simulation GetSimulation(Date rawTarget, List<Debt> rawDebts, List<Expense> rawExpenses, List<Investment> rawInvestments) {
         ArrayList<Debt> debts = new ArrayList<>();
         rawDebts.forEach((debt) -> {try {
             debts.add(debt.clone());
@@ -34,7 +34,12 @@ public class LifeTableService {
         ArrayList<SimulationStep> steps = new ArrayList<>();
         
         LocalDate localDate = LocalDate.now();
-        Date simulationDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date simulationDate = Date.from(localDate
+        .atStartOfDay(ZoneId.systemDefault())
+        .withDayOfMonth(1)
+        .toInstant());
+        
+        Date target = convertToTargetDate (rawTarget);
 
         while (simulationDate.before(target)) {
             
@@ -49,7 +54,7 @@ public class LifeTableService {
 
             steps.add(step);
             localDate = localDate.plusMonths(1);
-            simulationDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            simulationDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).withDayOfMonth(1).toInstant());
         }        
 
         return new Simulation(steps, target);
@@ -58,7 +63,7 @@ public class LifeTableService {
     private ArrayList<Expense> getExpenses(List<Expense> rawExpenses, Date simulationDate) {
         ArrayList<Expense> expenses = new ArrayList<>();
         for (Expense expense : rawExpenses) {
-            if (expense.getPurchaseDate().compareTo(simulationDate) == 0) {
+            if (convertToTargetDate(expense.getPurchaseDate()).compareTo(simulationDate) == 0) {
                 expenses.add(expense);
             }
         }
@@ -81,7 +86,7 @@ public class LifeTableService {
         ArrayList<Debt> paidOffDebts = new ArrayList<>();
 
         for (Debt debt : debts) {
-            if (debt.isPaidOff()){
+            if (debt.getIsPaidOff()){
                 continue;
             }
 
@@ -89,7 +94,7 @@ public class LifeTableService {
             BigDecimal newBalance = debt.getBalance().add(interest).subtract(debt.getPayment());
 
             if (newBalance.compareTo(BigDecimal.ZERO) <= 0){
-                debt.setPaidOff(true);
+                debt.setIsPaidOff(true);
                 debt.setBalance(BigDecimal.ZERO);
                 paidOffDebts.add(debt);
                 continue;
@@ -120,5 +125,14 @@ public class LifeTableService {
             totalBalance = totalBalance.add(investment.getAmount());
         }
         return totalBalance;
+    }
+
+    private Date convertToTargetDate(Date dateToConvert) {
+        return Date.from(dateToConvert.toInstant()
+          .atZone(ZoneId.systemDefault())
+          .toLocalDate()
+          .atStartOfDay(ZoneId.systemDefault())
+          .withDayOfMonth(1)
+          .toInstant());
     }
 }

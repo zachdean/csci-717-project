@@ -88,7 +88,10 @@ public class InvestmentFunction {
         try {
             this.dataStore.Initialize();
             List<Investment> investments = this.investmentService.getInvestments(userId);
-            return request.createResponseBuilder(HttpStatus.OK).body(investments).build();
+            return request.createResponseBuilder(HttpStatus.OK)
+            .body(investments)
+            .header("Content-Type", "application/json")
+            .build();
 
         } catch (Exception e) {
             context.getLogger().warning(e.toString());

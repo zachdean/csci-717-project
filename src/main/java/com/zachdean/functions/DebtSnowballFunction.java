@@ -15,6 +15,8 @@ import com.microsoft.azure.functions.annotation.HttpTrigger;
 import com.zachdean.debt_snowball.Debt;
 import com.zachdean.debt_snowball.SnowballService;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +60,7 @@ public class DebtSnowballFunction {
         
         if (body == null) {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
-        }
+        }       
 
         try {
             this.dataStore.Initialize();
@@ -69,8 +71,12 @@ public class DebtSnowballFunction {
             context.getLogger().warning(e.toString());
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to parse").build();
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
             context.getLogger().warning(e.toString());
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to initialize Data Store").build();
+            context.getLogger().warning(sw.toString());
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body(e.getMessage() + " " + sw.toString()).build();
         }
 
         return request.createResponseBuilder(HttpStatus.OK).build();
@@ -92,7 +98,10 @@ public class DebtSnowballFunction {
         try {
             this.dataStore.Initialize();
             List<Debt> debts = this.snowballService.getDebts(userId);
-            return request.createResponseBuilder(HttpStatus.OK).body(debts).build();
+            return request.createResponseBuilder(HttpStatus.OK)
+            .body(debts)
+            .header("Content-Type", "application/json")
+            .build();
 
         } catch (Exception e) {
             context.getLogger().warning(e.toString());

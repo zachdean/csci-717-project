@@ -1,2 +1,4 @@
 # ignore generated code
 target/
+
+local.settings.json

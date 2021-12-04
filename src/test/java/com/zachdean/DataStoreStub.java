@@ -5,6 +5,7 @@ import com.zachdean.data_access.DataStore;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unchecked")
 public class DataStoreStub<Type> implements DataStore {
 
     public ArrayList<Type> Items;

@@ -1,5 +1,6 @@
 package com.zachdean.functions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -14,6 +15,9 @@ import com.zachdean.investment.Investment;
 import com.zachdean.life_table.*;
 import com.zachdean.major_expense.*;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -36,17 +40,37 @@ public class LifeTableFunction {
         
         context.getLogger().info("Java HTTP trigger processed a request.");
 
-        try {            
+        this.dataFetcher.setBaseAddess(request.getUri());
+
+        try {
+            context.getLogger().info("fetching debts");
             List<Debt> debts = this.dataFetcher.fetchDebts(userId);
+            context.getLogger().info("fetching investments");
             List<Investment> investments = this.dataFetcher.fetchInvestments(userId);
+            context.getLogger().info("fetching expenses");
             List<Expense> expenses = this.dataFetcher.fetchExpenses(userId);
             
+            context.getLogger().info("running simulation");
             Simulation simulation = this.lifeTableService.GetSimulation(targetDate, debts, expenses, investments);
 
-            return request.createResponseBuilder(HttpStatus.OK).body(simulation).build();
+            context.getLogger().info("simulation complete");
+            
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+
+            String json = mapper.writeValueAsString(simulation);
+
+            return request.createResponseBuilder(HttpStatus.OK)
+            .body(json)
+            .header("Content-Type", "application/json")
+            .build();
 
         } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
             context.getLogger().warning(e.toString());
+            context.getLogger().warning(sw.toString());
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to fetch " + e.toString()).build();
         }        
     }

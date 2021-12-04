@@ -3,32 +3,41 @@ package com.zachdean.major_expense;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Expense implements Cloneable {
-    private BigDecimal Amount;
-    private Date PurchaseDate;
-    private String Name;
+    private BigDecimal amount;
+    private Date purchaseDate;
+    private String name;
+    private String userId;
 
     public BigDecimal getAmount() {
-        return Amount;
+        return amount;
     }
 
     public void setAmount(BigDecimal amount) {
-        Amount = amount;
+        this.amount = amount;
     }
-
+    
     public Date getPurchaseDate() {
-        return PurchaseDate;
+        return purchaseDate;
     }
 
     public void setPurchaseDate(Date purchaseDate) {
-        PurchaseDate = purchaseDate;
+        this.purchaseDate = purchaseDate;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
+    
+    public String getId() { return userId + "-" + name;}
+
+    public String getUserId() { return userId; }    
+    public void setUserId(String userId) { this.userId = userId; }
 }

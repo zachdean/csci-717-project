@@ -14,6 +14,7 @@ import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
 import com.zachdean.major_expense.*;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,7 +88,15 @@ public class MajorExpenseFunction {
         try {
             this.dataStore.Initialize();
             List<Expense> expenses = this.expenseService.getExpenses(userId);
-            return request.createResponseBuilder(HttpStatus.OK).body(expenses).build();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+
+            String json = mapper.writeValueAsString(expenses);
+
+           return request.createResponseBuilder(HttpStatus.OK)
+            .body(json)
+            .header("Content-Type", "application/json")
+            .build();
 
         } catch (Exception e) {
             context.getLogger().warning(e.toString());
