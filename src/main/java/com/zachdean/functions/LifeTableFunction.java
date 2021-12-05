@@ -29,16 +29,12 @@ public class LifeTableFunction {
 
     @FunctionName("GetLifeTable")
     public HttpResponseMessage get(
-            @HttpTrigger(
-                name = "req",
-                methods = {HttpMethod.GET},
-                authLevel = AuthorizationLevel.ANONYMOUS,
-                route = "life-table/{userId}")
-                HttpRequestMessage<Optional<String>> request,
-                @BindingName("userId") String userId,
-                @BindingName("targetDate") Date targetDate,
+            @HttpTrigger(name = "req", methods = {
+                    HttpMethod.GET }, authLevel = AuthorizationLevel.ANONYMOUS, route = "life-table/{userId}") HttpRequestMessage<Optional<String>> request,
+            @BindingName("userId") String userId,
+            @BindingName("targetDate") Date targetDate,
             final ExecutionContext context) {
-        
+
         context.getLogger().info("Java HTTP trigger processed a request.");
 
         this.dataFetcher.setBaseAddess(request.getUri());
@@ -50,16 +46,16 @@ public class LifeTableFunction {
             Simulation simulation = this.lifeTableService.GetSimulation(targetDate, debts, expenses, investments);
 
             context.getLogger().info("simulation complete");
-            
+
             ObjectMapper mapper = new ObjectMapper();
             mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 
             String json = mapper.writeValueAsString(simulation);
 
             return request.createResponseBuilder(HttpStatus.OK)
-            .body(json)
-            .header("Content-Type", "application/json")
-            .build();
+                    .body(json)
+                    .header("Content-Type", "application/json")
+                    .build();
 
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -67,8 +63,9 @@ public class LifeTableFunction {
             e.printStackTrace(pw);
             context.getLogger().warning(e.toString());
             context.getLogger().warning(sw.toString());
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to fetch " + e.toString()).build();
-        }        
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to fetch " + e.toString())
+                    .build();
+        }
     }
 
 }

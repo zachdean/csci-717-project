@@ -15,7 +15,7 @@ import com.zachdean.debt_snowball.SnowballService;
 public class DebtsFetchLambda implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private final DynamodbDataStore dataStore = new DynamodbDataStore("csci717-project-debts");
     private final SnowballService snowballService = new SnowballService(dataStore);
-    
+
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");

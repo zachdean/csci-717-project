@@ -12,14 +12,14 @@ import com.zachdean.investment.Investment;
 import com.zachdean.major_expense.Expense;
 
 public class LifeTableTestData {
-    
+
     public static List<Debt> getDebts() {
         ArrayList<Debt> debts = new ArrayList<>();
         Debt debt = new Debt();
         debt.setBalance(BigDecimal.valueOf(20000));
         debt.setPayment(BigDecimal.valueOf(1500));
         debt.setInterestRate(BigDecimal.valueOf(.12));
-        debt.setName("Test");        
+        debt.setName("Test");
 
         debts.add(debt);
         return debts;
@@ -37,10 +37,10 @@ public class LifeTableTestData {
     }
 
     public static List<Expense> getExpenses() {
-        LocalDate localDate = LocalDate.now();        
+        LocalDate localDate = LocalDate.now();
 
         ArrayList<Expense> expenses = new ArrayList<>();
-        
+
         Expense expense = new Expense();
         expense.setAmount(BigDecimal.valueOf(1500));
         expense.setPurchaseDate(Date.from(localDate.plusMonths(10).atStartOfDay(ZoneId.systemDefault()).toInstant()));

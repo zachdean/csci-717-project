@@ -31,17 +31,17 @@ public class LifeTableLambda implements RequestHandler<APIGatewayProxyRequestEve
         String userId = input.getPathParameters().get("userId");
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-                
+
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date targetDate = formatter.parse(input.getQueryStringParameters().get("targetDate"));
-            
+
             this.dataFetcher.setBaseAddess(new URL("https://0le7d7w2df.execute-api.us-east-1.amazonaws.com").toURI());
-            
+
             List<Debt> debts = this.dataFetcher.fetchDebts(userId);
             List<Investment> investments = this.dataFetcher.fetchInvestments(userId);
             List<Expense> expenses = this.dataFetcher.fetchExpenses(userId);
-            
+
             Simulation simulation = this.lifeTableService.GetSimulation(targetDate, debts, expenses, investments);
 
             ObjectMapper mapper = new ObjectMapper();

@@ -14,7 +14,7 @@ class InvestmentServiceTest {
     Investment investment;
 
     @org.junit.jupiter.api.Test
-    void saveInvestment(){
+    void saveInvestment() {
 
         service.saveInvestment("userId", investment);
 
@@ -24,7 +24,7 @@ class InvestmentServiceTest {
     }
 
     @org.junit.jupiter.api.Test
-     void getInvestments(){
+    void getInvestments() {
         dataStore.UserId = "userId";
 
         dataStore.Items = new ArrayList<>();

@@ -14,7 +14,6 @@ class ExpenseServiceTest {
     ExpenseService service = new ExpenseService(dataStore);
     Expense expense;
 
-
     @org.junit.jupiter.api.Test
     void saveExpense() {
 

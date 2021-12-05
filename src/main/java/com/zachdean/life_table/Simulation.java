@@ -6,7 +6,7 @@ import java.util.List;
 public class Simulation {
     private List<SimulationStep> steps;
     private Date targetDate;
-    
+
     public Simulation(List<SimulationStep> steps, Date targetDate) {
         this.setSteps(steps);
         this.setTargetDate(targetDate);

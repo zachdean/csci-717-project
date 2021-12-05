@@ -15,7 +15,7 @@ public class DataStoreStub<Type> implements DataStore {
 
     @Override
     public <T> T getItem(String userId, String key, Class<T> cls) {
-        if (userId == UserId && key == Key){
+        if (userId == UserId && key == Key) {
             return (T) Item;
         }
         return null;
@@ -23,7 +23,7 @@ public class DataStoreStub<Type> implements DataStore {
 
     @Override
     public <T> List<T> getItems(String userId, Class<T> cls) {
-        if (userId == UserId){
+        if (userId == UserId) {
             return (List<T>) Items;
         }
         return null;
@@ -31,7 +31,7 @@ public class DataStoreStub<Type> implements DataStore {
 
     @Override
     public <T> void saveItem(String userId, String key, T item, Class<T> cls) {
-        Item = (Type)item;
+        Item = (Type) item;
         UserId = userId;
         Key = key;
     }

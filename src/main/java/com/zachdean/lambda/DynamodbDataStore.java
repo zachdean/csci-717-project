@@ -25,7 +25,7 @@ public class DynamodbDataStore implements DataStore {
         this.tableName = tableName;
     }
 
-    public void initialize(){
+    public void initialize() {
         Region region = Region.US_EAST_1;
         ddb = DynamoDbClient.builder()
                 .region(region)
@@ -33,7 +33,7 @@ public class DynamodbDataStore implements DataStore {
 
         enhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(ddb)
-                .build();  
+                .build();
     }
 
     public void close() {
@@ -42,7 +42,7 @@ public class DynamodbDataStore implements DataStore {
 
     @Override
     public <T> T getItem(String userId, String key, Class<T> cls) {
-        
+
         return null;
     }
 
@@ -53,12 +53,12 @@ public class DynamodbDataStore implements DataStore {
         DynamoDbTable<T> table = enhancedClient.table(tableName, TableSchema.fromBean(cls));
         QueryConditional queryConditional = QueryConditional
                 .keyEqualTo(Key.builder()
-                .partitionValue(userId)
-                .build());
+                        .partitionValue(userId)
+                        .build());
 
         // Get items in the table and write out the ID value
         Iterator<T> results = table.query(queryConditional).items().iterator();
-        
+
         while (results.hasNext()) {
             T rec = results.next();
             items.add(rec);

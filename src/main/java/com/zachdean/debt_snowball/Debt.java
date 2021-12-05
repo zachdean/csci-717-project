@@ -2,18 +2,21 @@ package com.zachdean.debt_snowball;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Debt implements Cloneable {
     private String userId;
     private boolean isPaidOff;
     private BigDecimal interestRate;
     private BigDecimal balance;
     private BigDecimal payment;
-    private String name;    
+    private String name;
 
     public boolean getIsPaidOff() {
         return isPaidOff;
@@ -57,13 +60,19 @@ public class Debt implements Cloneable {
     }
 
     @DynamoDbPartitionKey
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public String getId() { return userId + "-" + name;}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public Debt clone() throws CloneNotSupportedException
-    {
-        return (Debt)super.clone();
+    public String getId() {
+        return userId + "-" + name;
+    }
+
+    public Debt clone() throws CloneNotSupportedException {
+        return (Debt) super.clone();
     }
 }

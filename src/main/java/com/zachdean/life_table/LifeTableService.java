@@ -16,46 +16,51 @@ public class LifeTableService {
     // devide interest rate by twelve in simplified monthly interest rate
     private static final BigDecimal INTEREST_DENOMINATOR = BigDecimal.valueOf(12);
 
-    public Simulation GetSimulation(Date rawTarget, List<Debt> rawDebts, List<Expense> rawExpenses, List<Investment> rawInvestments) {
+    public Simulation GetSimulation(Date rawTarget, List<Debt> rawDebts, List<Expense> rawExpenses,
+            List<Investment> rawInvestments) {
         ArrayList<Debt> debts = new ArrayList<>();
-        rawDebts.forEach((debt) -> {try {
-            debts.add(debt.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }});
+        rawDebts.forEach((debt) -> {
+            try {
+                debts.add(debt.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        });
 
         ArrayList<Investment> investments = new ArrayList<>();
-        rawInvestments.forEach((investment) -> {try {
-            investments.add(investment.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }});
+        rawInvestments.forEach((investment) -> {
+            try {
+                investments.add(investment.clone());
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        });
 
         ArrayList<SimulationStep> steps = new ArrayList<>();
-        
+
         LocalDate localDate = LocalDate.now();
         Date simulationDate = Date.from(localDate
-        .atStartOfDay(ZoneId.systemDefault())
-        .withDayOfMonth(1)
-        .toInstant());
-        
-        Date target = convertToTargetDate (rawTarget);
+                .atStartOfDay(ZoneId.systemDefault())
+                .withDayOfMonth(1)
+                .toInstant());
+
+        Date target = convertToTargetDate(rawTarget);
 
         while (simulationDate.before(target)) {
-            
+
             ArrayList<Debt> paidOffDebts = calulateDebts(debts);
             ArrayList<Expense> expenses = getExpenses(rawExpenses, simulationDate);
-            
+
             BigDecimal netWorth = sumInvestmentsBalance(investments)
-                                        .subtract(sumDebtBalances(debts))
-                                        .subtract(sumExpenses(expenses));
+                    .subtract(sumDebtBalances(debts))
+                    .subtract(sumExpenses(expenses));
 
             SimulationStep step = new SimulationStep(netWorth, simulationDate, paidOffDebts, expenses);
 
             steps.add(step);
             localDate = localDate.plusMonths(1);
             simulationDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).withDayOfMonth(1).toInstant());
-        }        
+        }
 
         return new Simulation(steps, target);
     }
@@ -72,28 +77,28 @@ public class LifeTableService {
 
     private BigDecimal sumExpenses(List<Expense> expenses) {
         BigDecimal amount = BigDecimal.ZERO;
-        if (expenses == null){
+        if (expenses == null) {
             return amount;
         }
-        for (Expense expense : expenses){
+        for (Expense expense : expenses) {
             amount = amount.add(expense.getAmount());
         }
         return amount;
     }
 
-    private ArrayList<Debt> calulateDebts(ArrayList<Debt> debts)
-    {
+    private ArrayList<Debt> calulateDebts(ArrayList<Debt> debts) {
         ArrayList<Debt> paidOffDebts = new ArrayList<>();
 
         for (Debt debt : debts) {
-            if (debt.getIsPaidOff()){
+            if (debt.getIsPaidOff()) {
                 continue;
             }
 
-            BigDecimal interest = debt.getBalance().multiply(debt.getInterestRate()).divide(INTEREST_DENOMINATOR, 2, RoundingMode.HALF_EVEN);
+            BigDecimal interest = debt.getBalance().multiply(debt.getInterestRate()).divide(INTEREST_DENOMINATOR, 2,
+                    RoundingMode.HALF_EVEN);
             BigDecimal newBalance = debt.getBalance().add(interest).subtract(debt.getPayment());
 
-            if (newBalance.compareTo(BigDecimal.ZERO) <= 0){
+            if (newBalance.compareTo(BigDecimal.ZERO) <= 0) {
                 debt.setIsPaidOff(true);
                 debt.setBalance(BigDecimal.ZERO);
                 paidOffDebts.add(debt);
@@ -106,7 +111,7 @@ public class LifeTableService {
         return paidOffDebts.size() == 0 ? null : paidOffDebts;
     }
 
-    private BigDecimal sumDebtBalances(List<Debt> debts){
+    private BigDecimal sumDebtBalances(List<Debt> debts) {
         BigDecimal balance = BigDecimal.ZERO;
         for (Debt debt : debts) {
             balance = balance.add(debt.getBalance());
@@ -114,11 +119,12 @@ public class LifeTableService {
         return balance;
     }
 
-    private BigDecimal sumInvestmentsBalance(List<Investment> investments){
+    private BigDecimal sumInvestmentsBalance(List<Investment> investments) {
 
         BigDecimal totalBalance = BigDecimal.ZERO;
         for (Investment investment : investments) {
-            BigDecimal interest = investment.getAmount().multiply(investment.getInterestRate()).divide(INTEREST_DENOMINATOR, 2, RoundingMode.HALF_EVEN);
+            BigDecimal interest = investment.getAmount().multiply(investment.getInterestRate())
+                    .divide(INTEREST_DENOMINATOR, 2, RoundingMode.HALF_EVEN);
             BigDecimal amount = investment.getAmount().add(interest);
             investment.setAmount(amount);
 
@@ -129,10 +135,10 @@ public class LifeTableService {
 
     private Date convertToTargetDate(Date dateToConvert) {
         return Date.from(dateToConvert.toInstant()
-          .atZone(ZoneId.systemDefault())
-          .toLocalDate()
-          .atStartOfDay(ZoneId.systemDefault())
-          .withDayOfMonth(1)
-          .toInstant());
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .withDayOfMonth(1)
+                .toInstant());
     }
 }

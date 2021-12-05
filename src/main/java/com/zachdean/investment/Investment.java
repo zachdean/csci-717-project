@@ -2,11 +2,14 @@ package com.zachdean.investment;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Investment implements Cloneable {
     private BigDecimal interestRate;
     private BigDecimal amount;
@@ -38,14 +41,20 @@ public class Investment implements Cloneable {
         this.name = name;
     }
 
-    public String getId() { return userId + "-" + name;}
-    
-    @DynamoDbPartitionKey
-    public String getUserId() { return userId; }
-    public void serUserId(String userId) { this.userId = userId; }
+    public String getId() {
+        return userId + "-" + name;
+    }
 
-    public Investment clone() throws CloneNotSupportedException
-    {
-        return (Investment)super.clone();
+    @DynamoDbPartitionKey
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Investment clone() throws CloneNotSupportedException {
+        return (Investment) super.clone();
     }
 }

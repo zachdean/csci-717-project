@@ -12,7 +12,7 @@ import com.zachdean.major_expense.*;
 public class ExpenseUpdateLambda implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private final DynamodbDataStore dataStore = new DynamodbDataStore("csci717-project-expenses");
     private final ExpenseService expenseService = new ExpenseService(dataStore);
-    
+
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 
@@ -33,5 +33,5 @@ public class ExpenseUpdateLambda implements RequestHandler<APIGatewayProxyReques
                     .withBody(e.toString())
                     .withStatusCode(500);
         }
-    }    
+    }
 }

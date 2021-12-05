@@ -13,7 +13,7 @@ import com.zachdean.debt_snowball.SnowballService;
 public class DebtUpdateLambda implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private final DynamodbDataStore dataStore = new DynamodbDataStore("csci717-project-debts");
     private final SnowballService snowballService = new SnowballService(dataStore);
-    
+
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 

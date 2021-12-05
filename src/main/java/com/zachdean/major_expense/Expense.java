@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.zachdean.lambda.DateAttributeConverter;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbConvertedBy;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
@@ -24,7 +26,8 @@ public class Expense implements Cloneable {
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
+
+    @DynamoDbConvertedBy(DateAttributeConverter.class)
     public Date getPurchaseDate() {
         return purchaseDate;
     }
@@ -41,10 +44,17 @@ public class Expense implements Cloneable {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public String getId() { return userId + "-" + name;}
-    
+
+    public String getId() {
+        return userId + "-" + name;
+    }
+
     @DynamoDbPartitionKey
-    public String getUserId() { return userId; }    
-    public void setUserId(String userId) { this.userId = userId; }
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

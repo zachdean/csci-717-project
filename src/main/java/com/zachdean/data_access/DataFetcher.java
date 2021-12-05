@@ -18,7 +18,7 @@ import com.zachdean.major_expense.Expense;
 public class DataFetcher {
     private String baseAddress = "";
 
-    public void setBaseAddess(URI uri){
+    public void setBaseAddess(URI uri) {
         String schema = uri.getScheme();
         String host = uri.getHost();
 
@@ -32,19 +32,20 @@ public class DataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("accept", "application/json");
-            
+
             InputStream responseStream = con.getInputStream();
-                        
+
             ObjectMapper mapper = new ObjectMapper();
-            
-            return mapper.readValue(responseStream, new TypeReference<List<Debt>>(){});
+
+            return mapper.readValue(responseStream, new TypeReference<List<Debt>>() {
+            });
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 
@@ -54,19 +55,20 @@ public class DataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("accept", "application/json");
-            
+
             InputStream responseStream = con.getInputStream();
-            
+
             ObjectMapper mapper = new ObjectMapper();
-            
-            return mapper.readValue(responseStream, new TypeReference<List<Investment>>(){});
+
+            return mapper.readValue(responseStream, new TypeReference<List<Investment>>() {
+            });
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
 
@@ -76,20 +78,21 @@ public class DataFetcher {
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("accept", "application/json");
-            
+
             InputStream responseStream = con.getInputStream();
-            
+
             ObjectMapper mapper = new ObjectMapper();
-            
-            return mapper.readValue(responseStream, new TypeReference<List<Expense>>(){});
+
+            return mapper.readValue(responseStream, new TypeReference<List<Expense>>() {
+            });
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         return null;
     }
-    
+
 }

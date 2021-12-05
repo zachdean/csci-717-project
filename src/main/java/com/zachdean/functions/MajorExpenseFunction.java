@@ -30,30 +30,29 @@ public class MajorExpenseFunction {
     }
 
     /**
-     * This function listens at endpoint "/api/HttpExample". Two ways to invoke it using "curl" command in bash:
+     * This function listens at endpoint "/api/HttpExample". Two ways to invoke it
+     * using "curl" command in bash:
      * 1. curl -d "HTTP Body" {your host}/api/HttpExample
      * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
+     * 
      * @throws JsonProcessingException
      * @throws JsonMappingException
      */
     @FunctionName("UpdateExpense")
     public HttpResponseMessage update(
-            @HttpTrigger(
-                name = "req",
-                methods = {HttpMethod.POST},
-                authLevel = AuthorizationLevel.ANONYMOUS,
-                route = "expenses/{userId}/expense")
-                HttpRequestMessage<Optional<String>> request,
-                @BindingName("userId") String userId,
+            @HttpTrigger(name = "req", methods = {
+                    HttpMethod.POST }, authLevel = AuthorizationLevel.ANONYMOUS, route = "expenses/{userId}/expense") HttpRequestMessage<Optional<String>> request,
+            @BindingName("userId") String userId,
             final ExecutionContext context) {
-        
+
         context.getLogger().info("Java HTTP trigger processed a request.");
-                
+
         // Parse query parameter
         final String body = request.getBody().orElse(null);
-       
+
         if (body == null) {
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Please pass a name on the query string or in the request body").build();
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST)
+                    .body("Please pass a name on the query string or in the request body").build();
         }
 
         try {
@@ -66,7 +65,8 @@ public class MajorExpenseFunction {
             return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to parse").build();
         } catch (Exception e) {
             context.getLogger().warning(e.toString());
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to initialize Data Store").build();
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to initialize Data Store")
+                    .build();
         }
 
         return request.createResponseBuilder(HttpStatus.OK).build();
@@ -74,15 +74,11 @@ public class MajorExpenseFunction {
 
     @FunctionName("GetExpenses")
     public HttpResponseMessage get(
-            @HttpTrigger(
-                name = "req",
-                methods = {HttpMethod.GET},
-                authLevel = AuthorizationLevel.ANONYMOUS,
-                route = "expenses/{userId}")
-                HttpRequestMessage<Optional<String>> request,
-                @BindingName("userId") String userId,
+            @HttpTrigger(name = "req", methods = {
+                    HttpMethod.GET }, authLevel = AuthorizationLevel.ANONYMOUS, route = "expenses/{userId}") HttpRequestMessage<Optional<String>> request,
+            @BindingName("userId") String userId,
             final ExecutionContext context) {
-        
+
         context.getLogger().info("Java HTTP trigger processed a request.");
 
         try {
@@ -94,14 +90,15 @@ public class MajorExpenseFunction {
 
             String json = mapper.writeValueAsString(expenses);
 
-           return request.createResponseBuilder(HttpStatus.OK)
-            .body(json)
-            .header("Content-Type", "application/json")
-            .build();
+            return request.createResponseBuilder(HttpStatus.OK)
+                    .body(json)
+                    .header("Content-Type", "application/json")
+                    .build();
 
         } catch (Exception e) {
             context.getLogger().warning(e.toString());
-            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to fetch " + e.toString()).build();
-        }        
+            return request.createResponseBuilder(HttpStatus.BAD_REQUEST).body("Failed to fetch " + e.toString())
+                    .build();
+        }
     }
 }

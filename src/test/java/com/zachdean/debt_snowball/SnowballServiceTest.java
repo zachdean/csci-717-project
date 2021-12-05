@@ -19,6 +19,7 @@ class SnowballServiceTest {
         debt = new Debt();
         debt.setName("Test");
     }
+
     @Test
     void saveDebt() {
         service.saveDebt("userId", debt);

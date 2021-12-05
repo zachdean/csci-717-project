@@ -9,7 +9,8 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zachdean.investment.*;
 
-public class InvestmentUpdateLambda implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class InvestmentUpdateLambda
+        implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private final DynamodbDataStore dataStore = new DynamodbDataStore("csci717-project-investments");
     private final InvestmentService snowballService = new InvestmentService(dataStore);
 
@@ -34,5 +35,5 @@ public class InvestmentUpdateLambda implements RequestHandler<APIGatewayProxyReq
                     .withStatusCode(500);
         }
     }
-    
+
 }
