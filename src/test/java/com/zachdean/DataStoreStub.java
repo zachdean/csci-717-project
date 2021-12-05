@@ -30,7 +30,7 @@ public class DataStoreStub<Type> implements DataStore {
     }
 
     @Override
-    public void saveItem(String userId, String key, Object item) {
+    public <T> void saveItem(String userId, String key, T item, Class<T> cls) {
         Item = (Type)item;
         UserId = userId;
         Key = key;

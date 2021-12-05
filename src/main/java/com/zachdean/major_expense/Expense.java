@@ -5,7 +5,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
+@DynamoDbBean
 public class Expense implements Cloneable {
     private BigDecimal amount;
     private Date purchaseDate;
@@ -28,6 +33,7 @@ public class Expense implements Cloneable {
         this.purchaseDate = purchaseDate;
     }
 
+    @DynamoDbSortKey
     public String getName() {
         return name;
     }
@@ -37,7 +43,8 @@ public class Expense implements Cloneable {
     }
     
     public String getId() { return userId + "-" + name;}
-
+    
+    @DynamoDbPartitionKey
     public String getUserId() { return userId; }    
     public void setUserId(String userId) { this.userId = userId; }
 }

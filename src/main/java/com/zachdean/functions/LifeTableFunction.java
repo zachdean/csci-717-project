@@ -10,6 +10,7 @@ import com.microsoft.azure.functions.annotation.AuthorizationLevel;
 import com.microsoft.azure.functions.annotation.BindingName;
 import com.microsoft.azure.functions.annotation.FunctionName;
 import com.microsoft.azure.functions.annotation.HttpTrigger;
+import com.zachdean.data_access.DataFetcher;
 import com.zachdean.debt_snowball.Debt;
 import com.zachdean.investment.Investment;
 import com.zachdean.life_table.*;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class LifeTableFunction {
-    private AzureDataFetcher dataFetcher = new AzureDataFetcher();
+    private DataFetcher dataFetcher = new DataFetcher();
     private LifeTableService lifeTableService = new LifeTableService();
 
     @FunctionName("GetLifeTable")
@@ -43,14 +44,9 @@ public class LifeTableFunction {
         this.dataFetcher.setBaseAddess(request.getUri());
 
         try {
-            context.getLogger().info("fetching debts");
             List<Debt> debts = this.dataFetcher.fetchDebts(userId);
-            context.getLogger().info("fetching investments");
             List<Investment> investments = this.dataFetcher.fetchInvestments(userId);
-            context.getLogger().info("fetching expenses");
             List<Expense> expenses = this.dataFetcher.fetchExpenses(userId);
-            
-            context.getLogger().info("running simulation");
             Simulation simulation = this.lifeTableService.GetSimulation(targetDate, debts, expenses, investments);
 
             context.getLogger().info("simulation complete");

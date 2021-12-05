@@ -2,6 +2,11 @@ package com.zachdean.investment;
 
 import java.math.BigDecimal;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
+
+@DynamoDbBean
 public class Investment implements Cloneable {
     private BigDecimal interestRate;
     private BigDecimal amount;
@@ -24,6 +29,7 @@ public class Investment implements Cloneable {
         this.amount = amount;
     }
 
+    @DynamoDbSortKey
     public String getName() {
         return name;
     }
@@ -34,6 +40,7 @@ public class Investment implements Cloneable {
 
     public String getId() { return userId + "-" + name;}
     
+    @DynamoDbPartitionKey
     public String getUserId() { return userId; }
     public void serUserId(String userId) { this.userId = userId; }
 

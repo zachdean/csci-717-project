@@ -12,7 +12,7 @@ public class InvestmentService {
     }
 
     public void saveInvestment(String userId, Investment investment) {
-        dataStore.saveItem(userId, investment.getName(), investment);
+        dataStore.saveItem(userId, investment.getName(), investment, Investment.class);
     }
 
     public List<Investment> getInvestments(String userId) {

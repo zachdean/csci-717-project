@@ -88,6 +88,7 @@ public class MajorExpenseFunction {
         try {
             this.dataStore.Initialize();
             List<Expense> expenses = this.expenseService.getExpenses(userId);
+            this.dataStore.close();
             ObjectMapper mapper = new ObjectMapper();
             mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 

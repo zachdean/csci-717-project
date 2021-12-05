@@ -5,5 +5,5 @@ import java.util.List;
 public interface DataStore {
     <T> T getItem(String userId, String key, Class<T> cls);
     <T> List<T> getItems(String userId, Class<T> cls);
-    void saveItem(String userId, String key, Object item);
+    <T> void saveItem(String userId, String key, T item, Class<T> cls);
 }

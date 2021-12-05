@@ -59,7 +59,7 @@ public class CosmosDataStore implements DataStore {
     }
 
     @Override
-    public void saveItem(String userId, String key, Object item) {
+    public <T> void saveItem(String userId, String key, T item, Class<T> cls) {
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();        
         container.createItem(item, cosmosItemRequestOptions);
     }

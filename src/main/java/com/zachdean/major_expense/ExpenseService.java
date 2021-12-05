@@ -12,7 +12,7 @@ public class ExpenseService {
     }
 
     public void saveExpense(String userId, Expense expense) {
-        dataStore.saveItem(userId, expense.getName(), expense);
+        dataStore.saveItem(userId, expense.getName(), expense, Expense.class);
     }
 
     public List<Expense> getExpenses(String userId) {

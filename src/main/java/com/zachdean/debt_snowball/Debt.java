@@ -2,6 +2,11 @@ package com.zachdean.debt_snowball;
 
 import java.math.BigDecimal;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
+
+@DynamoDbBean
 public class Debt implements Cloneable {
     private String userId;
     private boolean isPaidOff;
@@ -34,6 +39,7 @@ public class Debt implements Cloneable {
         this.balance = balance;
     }
 
+    @DynamoDbSortKey
     public String getName() {
         return name;
     }
@@ -50,6 +56,7 @@ public class Debt implements Cloneable {
         this.payment = payment;
     }
 
+    @DynamoDbPartitionKey
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
 

@@ -60,6 +60,7 @@ public class InvestmentFunction {
             this.dataStore.Initialize(); 
             Investment investment = new ObjectMapper().readValue(body, Investment.class);
             this.investmentService.saveInvestment(userId, investment);
+            this.dataStore.close();
 
         } catch (JsonProcessingException e) {
             context.getLogger().warning(e.toString());
@@ -88,6 +89,7 @@ public class InvestmentFunction {
         try {
             this.dataStore.Initialize();
             List<Investment> investments = this.investmentService.getInvestments(userId);
+            this.dataStore.close();
             return request.createResponseBuilder(HttpStatus.OK)
             .body(investments)
             .header("Content-Type", "application/json")

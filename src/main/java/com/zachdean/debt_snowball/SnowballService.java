@@ -12,7 +12,7 @@ public class SnowballService {
     }
 
     public void saveDebt(String userId, Debt debt) {
-        dataStore.saveItem(userId, debt.getName(), debt);
+        dataStore.saveItem(userId, debt.getName(), debt, Debt.class);
     }
 
     public List<Debt> getDebts(String userId) {
