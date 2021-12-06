@@ -1,8 +1,0 @@
-{
-  "IsEncrypted": false,
-  "Values": {
-    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=5090b1385b1742738094;AccountKey=l/lKxyMR4z6+P/S540LHH4WQikKhQWfFg/F3OKCBV+FNAJtXTWTjp+aIdmq/Bigv1GTEcuTvG6v72mCRtKj4oA==;EndpointSuffix=core.windows.net",
-    "CosmosDbConnectionString":"AccountEndpoint=https://csci717-cosmosdb.documents.azure.com:443/;AccountKey=ZfScRCuwpyA4MYeCZlLg9EgQc8mYlrUHXaKcUpeyEZ6PAsItK0EsDtvwEwJtAS8OW2whME30HZwyAsk9r3p0YQ==;",
-    "FUNCTIONS_WORKER_RUNTIME": "java"
-  }
-}
